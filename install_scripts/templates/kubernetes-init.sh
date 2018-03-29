@@ -41,6 +41,7 @@ NO_CE_ON_EE="{{ no_ce_on_ee }}"
 {% include 'common/log.sh' %}
 {% include 'common/kubernetes.sh' %}
 {% include 'common/selinux.sh' %}
+{% include 'common/cloud.sh' %}
 
 initKubeadmConfig() {
     mkdir -p /opt/replicated
@@ -53,6 +54,15 @@ tokenTTL: ${BOOTSTRAP_TOKEN_TTL}
 apiServerExtraArgs:
   service-node-port-range: "3000-60000"
 EOF
+
+    detectCloud
+    case "$CLOUD" in
+        "$AWS")
+            cat <<EOF >> /opt/replicated/kubeadm.conf
+cloudProvider: aws
+EOF
+        ;;
+    esac
 
     # if we have a private address, add it to SANs
     if [ -n "$PRIVATE_ADDRESS" ]; then
