@@ -456,8 +456,7 @@ airgapMaybeLabelMasterNode()
         return
     fi
 
-    _master=$(k8sMasterNodeName)
-    kubectl label nodes "$node_name" "$DAEMON_NODE_KEY"=
+    kubectl label nodes "$(k8sMasterNodeName)" "$DAEMON_NODE_KEY"=
 }
 
 #######################################
