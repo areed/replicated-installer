@@ -2,6 +2,7 @@
 # imagePullPolicy changed from Always to IfNotPresent
 # service type changed from LoadBalancer to NodePort and add nodePorts 80 and 443
 # contour image tag changed from :master to :v0.11.0
+# envoy image changed to envoy-alpine
 # annotations for AWS, statsd, and prometheus removed
 apiVersion: v1
 kind: Namespace
@@ -289,7 +290,7 @@ spec:
         name: contour
         command: ["contour"]
         args: ["serve", "--incluster", "--envoy-service-http-port", "8080", "--envoy-service-https-port", "8443"]
-      - image: docker.io/envoyproxy/envoy:v1.9.1
+      - image: docker.io/envoyproxy/envoy-alpine:v1.9.1
         name: envoy
         ports:
         - containerPort: 8080
